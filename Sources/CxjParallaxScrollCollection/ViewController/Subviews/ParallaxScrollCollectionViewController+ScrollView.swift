@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension ParallaxScrollCollectionViewController {
+extension ParallaxScrollCollectionViewControllerImpl {
 	final class ParallaxMasterScrollView: UIScrollView {
 		var collectionViews: [UICollectionView] = []
 		

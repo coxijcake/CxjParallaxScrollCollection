@@ -5,7 +5,7 @@ import UIKit
 
 public enum CxjParallaxScrollCollection {
 	@MainActor
-	public protocol ViewController: UIViewController {
+	public protocol ViewController: UIViewController {		
 		func reloadData()
 		func reloadSections(_ sections: IndexSet)
 		func reconfigureItemAtIndexPath(_ indexPath: IndexPath)
@@ -32,7 +32,6 @@ public enum CxjParallaxScrollCollection {
 	}
 	
 	public protocol CellModel {
-		var id: UUID { get }
 		var requiredWidth: CGFloat { get }
 	}
 	
@@ -40,7 +39,6 @@ public enum CxjParallaxScrollCollection {
 	public protocol ContentCell: UICollectionViewCell {
 		func configureWithModel(_ cellModel: CellModel)
 	}
-	
 	
 	@MainActor
 	public protocol Delegate: AnyObject {
@@ -58,19 +56,5 @@ public enum CxjParallaxScrollCollection {
 	
 	public enum ScrollPosition {
 		case left, right, center
-	}
-}
-
-@MainActor
-public enum CxjParallaxViewControllerAssembler {
-	public typealias Module = CxjParallaxScrollCollection
-	
-	public static func vcWith(layout: Module.Layout, dataSource: Module.DataSource, delegate: Module.Delegate) -> Module.ViewController {
-		let viewController: ParallaxScrollCollectionViewController = ParallaxScrollCollectionViewController()
-		viewController.layout = layout
-		viewController.dataSource = dataSource
-		viewController.delegate = delegate
-		
-		return viewController
 	}
 }

@@ -2,6 +2,20 @@
 
 Create a parallax scrolling effect for your collection sections with **CxjParallaxScrollCollection**. This library allows you to add visually engaging and smooth parallax behavior to sections, while maintaining a familiar UIKit CollectionView API.
 
+## Video Examples of usage
+<table>
+  <tr>
+    <td>
+<img src="https://raw.githubusercontent.com/coxijcake/CxjParallaxScrollCollectionExample/main/assets/example_0.gif" alt="Animated GIF" />
+    </td>
+    <td>
+<img src="https://raw.githubusercontent.com/coxijcake/CxjParallaxScrollCollectionExample/main/assets/example_1.gif" alt="Animated GIF" />
+    </td>
+    <td>
+<img src="https://raw.githubusercontent.com/coxijcake/CxjParallaxScrollCollectionExample/main/assets/example_2.gif" alt="Animated GIF" />
+    </td>
+</table>
+
 ---
 
 # Table of contents

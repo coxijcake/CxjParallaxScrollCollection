@@ -47,7 +47,7 @@ A sample project demonstrating the use of **CxjParallaxScrollCollection** is ava
 - **Food & drinks**: Displaying mixed content for food and beverages.
 - **Hashtags cloud**: Classic hashtag-style labels.
 
-Simply clone the repository and open the example project to see **CxjToasts** in action.
+Simply clone the repository and open the example project to see **CxjParallaxScrollCollection** in action.
 
 [Click here to view the example project.](https://github.com/coxijcake/CxjParallaxScrollCollectionExample)
 

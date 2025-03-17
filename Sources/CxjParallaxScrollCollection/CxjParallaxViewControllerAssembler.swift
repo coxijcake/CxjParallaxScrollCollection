@@ -7,10 +7,17 @@
 
 import UIKit
 
+/// Assembler for creating and configuring a `CxjParallaxScrollCollection.ViewController`.
 @MainActor
 public enum CxjParallaxViewControllerAssembler {
 	public typealias Module = CxjParallaxScrollCollection
 	
+	/// Creates and assembles a ready-to-use parallax view controller.
+	/// - Parameters:
+	///   - layout: Layout configuration for parallax sections.
+	///   - dataSource: The data source providing models for cells.
+	///   - delegate: The delegate to handle user interaction.
+	/// - Returns: A configured instance conforming to `CxjParallaxScrollCollection.ViewController`.
 	public static func vcWith(
 		layout: Module.Layout,
 		dataSource: Module.DataSource,

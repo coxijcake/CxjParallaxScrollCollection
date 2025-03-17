@@ -18,7 +18,7 @@ public enum CxjParallaxViewControllerAssembler {
 	///   - dataSource: The data source providing models for cells.
 	///   - delegate: The delegate to handle user interaction.
 	/// - Returns: A configured instance conforming to `CxjParallaxScrollCollection.ViewController`.
-	public static func vcWith(
+	public static func assembleWith(
 		layout: Module.Layout,
 		dataSource: Module.DataSource,
 		delegate: Module.Delegate

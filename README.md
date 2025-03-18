@@ -82,7 +82,7 @@ import CxjParallaxScrollCollection
 
 ### Key components
 
-- **ViewController**: The main controller managing the synchronized collection sections.
+- **View**: The main view managing the synchronized collection sections.
 - **DataSource**: Supplies models and cell types for all sections.
 - **Delegate**: Handles user interactions such as item selection.
 - **CellModel**: Defines sizing info and configuration data for each cell.
@@ -114,10 +114,10 @@ final class MyViewController: UIViewController, CxjParallaxScrollCollection.Data
 }
 ```
 
-4. **Assemble the VC:**
+4. **Assemble the ParallaxCollectionView:**
 ```swift
-let parallaxVC = CxjParallaxViewControllerAssembler.assembleWith(layout: layout, dataSource: self, delegate: self)
-addChild(parallaxVC)
+let parallaxCollectionView = CxjParallaxViewAssembler.assembleWith(layout: layout, dataSource: self, delegate: self)
+view.addSubview(parallaxCollectionView)
 ```
 
 ---

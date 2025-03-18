@@ -1,5 +1,5 @@
 //
-//  ParallaxScrollCollectionViewController+ScrollView.swift
+//  ParallaxScrollCollectionView+ScrollView.swift
 //  CxjParallaxScrollCollection
 //
 //  Created by Nikita Begletskiy on 16/03/2025.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension ParallaxScrollCollectionViewControllerImpl {
+extension ParallaxScrollCollectionView {
 	final class ParallaxMasterScrollView: UIScrollView {
 		var collectionViews: [UICollectionView] = []
 		

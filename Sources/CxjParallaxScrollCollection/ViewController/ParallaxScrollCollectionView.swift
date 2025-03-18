@@ -1,5 +1,5 @@
 //
-//  CxjParallaxScrollCollectionViewController.swift
+//  ParallaxScrollCollectionView.swift
 //  CxjParallaxScrollCollection
 //
 //  Created by Nikita Begletskiy on 16/03/2025.
@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 //MARK: - Types
-extension ParallaxScrollCollectionViewControllerImpl {
+extension ParallaxScrollCollectionView {
 	typealias Module = CxjParallaxScrollCollection
 	
 	typealias CellModel = Module.CellModel
@@ -17,7 +17,7 @@ extension ParallaxScrollCollectionViewControllerImpl {
 	typealias ScrollPosition = Module.ScrollPosition
 }
 
-final class ParallaxScrollCollectionViewControllerImpl: UIViewController {
+final class ParallaxScrollCollectionView: UIView {
 	//MARK: - Subviews
 	private let contentSizeReferenceView = UIView()
 	private let scrollView = ParallaxMasterScrollView()
@@ -28,32 +28,40 @@ final class ParallaxScrollCollectionViewControllerImpl: UIViewController {
 	}
 	
 	//MARK: - Props
-	var layout: Module.Layout = .init(
-		sectionHeight: 40,
-		interSectionSpacing: 10,
-		interItemSpacing: 8,
-		sectionInset: .init(top: 0, left: 16, bottom: 0, right: 16)
-	)
+	private let layout: Module.Layout
 	
-	weak var dataSource: Module.DataSource!
-	weak var delegate: Module.Delegate!
+	private unowned let dataSource: Module.DataSource
+	private unowned let delegate: Module.Delegate
 	
 	//MARK: - Lifecycle
-	override func viewDidLoad() {
-		super.viewDidLoad()
+	init(
+		layout: Module.Layout,
+		dataSource: Module.DataSource,
+		delegate: Module.Delegate,
+		frame: CGRect = .zero
+	) {
+		self.layout = layout
+		self.dataSource = dataSource
+		self.delegate = delegate
+		
+		super.init(frame: frame)
 		
 		setupSubviews()
 	}
-
-	override func viewDidLayoutSubviews() {
-		super.viewDidLayoutSubviews()
+	
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+	
+	override func layoutSubviews() {
+		super.layoutSubviews()
 		
 		adjustScrollViewContentSize()
 	}
 }
 
 //MARK: - Helpers
-private extension ParallaxScrollCollectionViewControllerImpl {
+private extension ParallaxScrollCollectionView {
 	var cellType: Module.ContentCell.Type { dataSource.cellType }
 	
 	func collectionSectionForIndexPath(_ indexPath: IndexPath) -> UICollectionView {
@@ -76,7 +84,7 @@ private extension ParallaxScrollCollectionViewControllerImpl {
 }
 
 //MARK: - Scrolling
-extension ParallaxScrollCollectionViewControllerImpl {
+extension ParallaxScrollCollectionView {
 	func contentOffsetFactorForItemAt(
 		indexPath: IndexPath,
 		inCollectionView collectionView: UICollectionView,
@@ -124,7 +132,7 @@ extension ParallaxScrollCollectionViewControllerImpl {
 	}
 	
 	func adjustScrollViewContentSize() {
-		view.layoutIfNeeded()
+		layoutIfNeeded()
 		
 		guard
 			let widestCollection = collectionViews.max(by: { $0.contentSize.width < $1.contentSize.width })
@@ -138,8 +146,8 @@ extension ParallaxScrollCollectionViewControllerImpl {
 	}
 }
 
-//MARK: - CxjParallaxScrollCollection.ViewController
-extension ParallaxScrollCollectionViewControllerImpl: CxjParallaxScrollCollection.ViewController {
+//MARK: - CxjParallaxScrollCollection.View
+extension ParallaxScrollCollectionView: CxjParallaxScrollCollection.View {
 	func reloadData() {
 		let requiredSectionCount = dataSource.numberOfSections()
 		let currentSectionCount = collectionViews.count
@@ -191,7 +199,7 @@ extension ParallaxScrollCollectionViewControllerImpl: CxjParallaxScrollCollectio
 }
 
 // MARK: - UICollectionView DataSource
-extension ParallaxScrollCollectionViewControllerImpl: UICollectionViewDataSource {
+extension ParallaxScrollCollectionView: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return numberOfItemsInCollectionView(collectionView)
 	}
@@ -206,7 +214,7 @@ extension ParallaxScrollCollectionViewControllerImpl: UICollectionViewDataSource
 }
 
 //MARK: - UICollectionViewDelegate
-extension ParallaxScrollCollectionViewControllerImpl: UICollectionViewDelegate {
+extension ParallaxScrollCollectionView: UICollectionViewDelegate {
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		let sectionIndex: Int = sectionIndexForCollection(collectionView)
 		let selectedIndexPath: IndexPath = IndexPath(item: indexPath.item, section: sectionIndex)
@@ -216,7 +224,7 @@ extension ParallaxScrollCollectionViewControllerImpl: UICollectionViewDelegate {
 }
 
 //MARK: - UICollectionViewDelegateFlowLayout
-extension ParallaxScrollCollectionViewControllerImpl: UICollectionViewDelegateFlowLayout {
+extension ParallaxScrollCollectionView: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 		let model = cellModelAtIndexPath(indexPath, forCollection: collectionView)
 		return .init(width: model.requiredWidth, height: layout.sectionHeight)
@@ -224,7 +232,7 @@ extension ParallaxScrollCollectionViewControllerImpl: UICollectionViewDelegateFl
 }
 
 //MARK: - UIScrollViewDelegate
-extension ParallaxScrollCollectionViewControllerImpl: UIScrollViewDelegate {
+extension ParallaxScrollCollectionView: UIScrollViewDelegate {
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
 		guard scrollView === self.scrollView else { return }
 		
@@ -235,26 +243,26 @@ extension ParallaxScrollCollectionViewControllerImpl: UIScrollViewDelegate {
 }
 
 //MARK: - Subviews Configuration
-private extension ParallaxScrollCollectionViewControllerImpl {
+private extension ParallaxScrollCollectionView {
 	func setupSubviews() {
 		setupScrollView()
 		setupCollectionViews()
 	}
 	
 	func setupScrollView() {
-		view.addSubview(scrollView)
+		addSubview(scrollView)
 		scrollView.translatesAutoresizingMaskIntoConstraints = false
 		scrollView.delegate = self
 		scrollView.showsHorizontalScrollIndicator = false
 
 		NSLayoutConstraint.activate([
-			scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-			scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-			scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-			scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+			scrollView.topAnchor.constraint(equalTo: topAnchor),
+			scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+			scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+			scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
 		])
 
-		view.addSubview(stackView)
+		addSubview(stackView)
 		stackView.axis = .vertical
 		stackView.spacing = layout.interSectionSpacing
 		stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -267,7 +275,7 @@ private extension ParallaxScrollCollectionViewControllerImpl {
 			stackView.heightAnchor.constraint(greaterThanOrEqualToConstant: layout.sectionHeight)
 		])
 		
-		scrollView.addSubview(contentSizeReferenceView)
+		addSubview(contentSizeReferenceView)
 		contentSizeReferenceView.backgroundColor = .clear
 		contentSizeReferenceView.isUserInteractionEnabled = false
 	}

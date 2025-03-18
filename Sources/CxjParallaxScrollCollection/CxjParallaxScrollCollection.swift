@@ -7,11 +7,11 @@ import UIKit
 /// `CxjParallaxScrollCollection` provides a synced horizontal scrolling system across multiple collections with a parallax-like effect.
 public enum CxjParallaxScrollCollection {
 
-	// MARK: - ViewController
+	// MARK: - View
 
-	/// A controller that manages the parallax scrolling collections.
+	/// A view that manages the parallax scrolling collections.
 	@MainActor
-	public protocol ViewController: UIViewController {
+	public protocol View: UIView {
 
 		/// Reloads all sections and items.
 		func reloadData()
@@ -94,7 +94,7 @@ public enum CxjParallaxScrollCollection {
 
 	// MARK: - DataSource
 
-	/// Provides the data for the parallax scrolling controller.
+	/// Provides the data for the parallax scrolling view.
 	///
 	@MainActor
 	public protocol DataSource: AnyObject {

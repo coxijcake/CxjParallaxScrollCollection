@@ -65,7 +65,7 @@ Simply clone the repository and open the example project to see **CxjParallaxScr
 Add the package to your dependencies:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/coxijcake/CxjParallaxScrollCollection", from: "1.0.0")
+    .package(url: "https://github.com/coxijcake/CxjParallaxScrollCollection", from: "1.0.1")
 ]
 ```
 
